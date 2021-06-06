@@ -39,6 +39,5 @@ jobs:
         continue-on-error: true
 
       - name: Terraform Apply
-        run: terraform plan -no-color -auto-approve
-        continue-on-error: true
+        run: terraform plan  -no-color -auto-approve
 
