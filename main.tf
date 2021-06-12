@@ -150,7 +150,7 @@ resource "aws_ecr_repository" "peach-ecr" {
 }
 
 resource "aws_ecr_repository_policy" "peachpolicy" {
-  repository = aws_ecr_repository.peach-ecr.peach
+  repository = aws_ecr_repository.peach-ecr.name
 
   policy = <<EOF
 {
