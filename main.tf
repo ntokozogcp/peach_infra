@@ -109,7 +109,7 @@ module "eks" {
       additional_userdata                  = "echo foo bar"
       asg_desired_capacity                 = 2
       additional_security_group_ids        = [aws_security_group.worker_group_mgmt_one.id]
-      efs_additional_security_group_ids    = [aws_security_group.sg-peach-efs.id]
+      efs_additional_security_group_ids    = [aws_security_group.sg_peach_efs.id]
     },
   ]
 
