@@ -48,6 +48,7 @@ resource "aws_security_group" "all_worker_mgmt" {
       "192.168.0.0/16",
     ]
   }
+}
 resource "aws_security_group" "sg-peach-efs" {
   name_prefix = "sg-peach-efs"
   vpc_id      = module.vpc.vpc_id
@@ -127,6 +128,7 @@ provider "kubernetes" {
   load_config_file       = false
   version                = "~> 1.11"
 }
+
 resource "aws_efs_file_system" "peach-efs" {
 
    creation_token = "peach-efs"
@@ -142,7 +144,7 @@ tags = {
      Name = "PeachEFS"
 
    }
-
+}
 resource "aws_ecr_repository" "peach-ecr" {
   name = "peach"
 }
