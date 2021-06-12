@@ -50,7 +50,7 @@ resource "aws_security_group" "all_worker_mgmt" {
   }
 }
 resource "aws_security_group" "peach_efs" {
-  name_prefix = "sg-peach-efs"
+  name_prefix = "peach_efs"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
