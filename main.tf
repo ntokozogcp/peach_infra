@@ -49,7 +49,7 @@ resource "aws_security_group" "all_worker_mgmt" {
     ]
   }
 }
-resource "aws_security_group" "sg-peach-efs" {
+resource "aws_security_group" "sg_peach_efs" {
   name_prefix = "sg-peach-efs"
   vpc_id      = module.vpc.vpc_id
 
