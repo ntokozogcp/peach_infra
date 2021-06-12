@@ -48,6 +48,22 @@ resource "aws_security_group" "all_worker_mgmt" {
       "192.168.0.0/16",
     ]
   }
+resource "aws_security_group" "sg-peach-efs" {
+  name_prefix = "all_worker_management"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    from_port = 2049
+    to_port   = 2049
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "10.0.0.0/8",
+      "10.0.0.0/16",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+    ]
+  }
 }
 
 module "vpc" {
@@ -90,12 +106,13 @@ module "eks" {
       name                          = "worker-group-1"
       instance_type                 = "t2.small"
       additional_userdata           = "echo foo bar"
-      asg_desired_capacity          = 1
+      asg_desired_capacity          = 2
       additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
     },
   ]
 
   worker_additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
+  worker_additional_security_group_ids = [aws_security_group.sg-peach-efs]
   map_roles                            = var.map_roles
   map_users                            = var.map_users
   map_accounts                         = var.map_accounts
@@ -110,7 +127,59 @@ provider "kubernetes" {
   load_config_file       = false
   version                = "~> 1.11"
 }
+resource "aws_efs_file_system" "peach-efs" {
 
+   creation_token = "peach-efs"
+
+   performance_mode = "generalPurpose"
+
+   throughput_mode = "bursting"
+
+   encrypted = "true"
+
+tags = {
+
+     Name = "PeachEFS"
+
+   }
+
+resource "aws_ecr_repository" "peach-ecr" {
+  name = "peach"
+}
+
+resource "aws_ecr_repository_policy" "peachpolicy" {
+  repository = aws_ecr_repository.peach-ecr.peach
+
+  policy = <<EOF
+{
+    "Version": "2008-10-17",
+    "Statement": [
+        {
+            "Sid": "new policy",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:PutImage",
+                "ecr:InitiateLayerUpload",
+                "ecr:UploadLayerPart",
+                "ecr:CompleteLayerUpload",
+                "ecr:DescribeRepositories",
+                "ecr:GetRepositoryPolicy",
+                "ecr:ListImages",
+                "ecr:DeleteRepository",
+                "ecr:BatchDeleteImage",
+                "ecr:SetRepositoryPolicy",
+                "ecr:DeleteRepositoryPolicy"
+            ]
+        }
+    ]
+}
+EOF
+}
+}
 resource "kubernetes_deployment" "example" {
   metadata {
     name = "terraform-example"
