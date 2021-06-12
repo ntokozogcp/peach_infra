@@ -112,7 +112,7 @@ module "eks" {
   ]
 
   worker_additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
-  efs _additional_security_group_ids = [aws_security_group.sg-peach-efs]
+  efs _additional_security_group_ids   = [aws_security_group.sg-peach-efs]
   map_roles                            = var.map_roles
   map_users                            = var.map_users
   map_accounts                         = var.map_accounts
