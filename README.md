@@ -1,1 +1,1 @@
-# peach_infra AWS EKS 1.1
+# peach_infra AWS EKS 1.2
