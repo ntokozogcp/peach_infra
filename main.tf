@@ -103,16 +103,16 @@ module "eks" {
 
   worker_groups = [
     {
-      name                          = "worker-group-1"
-      instance_type                 = "t2.small"
-      additional_userdata           = "echo foo bar"
-      asg_desired_capacity          = 2
-      additional_security_group_ids = [aws_security_group.worker_group_mgmt_one.id]
+      name                                 = "worker-group-1"
+      instance_type                        = "t2.small"
+      additional_userdata                  = "echo foo bar"
+      asg_desired_capacity                 = 2
+      additional_security_group_ids        = [aws_security_group.worker_group_mgmt_one.id]
+      efs _additional_security_group_ids   = [aws_security_group.sg-peach-efs.id]
     },
   ]
 
   worker_additional_security_group_ids = [aws_security_group.all_worker_mgmt.id]
-  efs _additional_security_group_ids   = [aws_security_group.sg-peach-efs.id]
   map_roles                            = var.map_roles
   map_users                            = var.map_users
   map_accounts                         = var.map_accounts
