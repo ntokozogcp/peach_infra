@@ -49,7 +49,7 @@ resource "aws_security_group" "all_worker_mgmt" {
     ]
   }
 }
-resource "aws_security_group" "sg_peach_efs" {
+resource "aws_security_group" "peach_efs" {
   name_prefix = "sg-peach-efs"
   vpc_id      = module.vpc.vpc_id
 
@@ -109,7 +109,7 @@ module "eks" {
       additional_userdata                  = "echo foo bar"
       asg_desired_capacity                 = 2
       additional_security_group_ids        = [aws_security_group.worker_group_mgmt_one.id]
-      efs_additional_security_group_ids    = [aws_security_group.sg_peach_efs.id]
+      efs_additional_security_group_ids    = [aws_security_group.peach_efs.id]
     },
   ]
 
